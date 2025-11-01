@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: ollama-chatbot
+    runtime: docker
+    # For FREE TIER: Use Dockerfile.light (smaller model)
+    # For PAID TIER: Use Dockerfile (full model)
+    dockerfilePath: ./Dockerfile.light
+    plan: free  # Change to 'starter' or 'standard' for better performance
+    region: oregon
+    branch: main
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: FLASK_ENV
+        value: production
+    # Disk for storing Ollama models (persists between deploys)
+    disk:
+      name: ollama-models
+      mountPath: /root/.ollama
+      sizeGB: 10

@@ -1,0 +1,51 @@
+# LIGHTWEIGHT VERSION FOR RENDER FREE TIER
+# Uses smaller Gemma 2B model instead of Llama 3.1 8B
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Ollama
+RUN curl -fsSL https://ollama.com/install.sh | sh
+
+# Copy requirements
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application
+COPY . .
+
+# Create logs directory
+RUN mkdir -p logs
+
+# Expose port
+EXPOSE 5000
+
+ENV PYTHONUNBUFFERED=1
+ENV FLASK_APP=web_app.py
+
+# Startup script with SMALLER MODEL for free tier
+RUN echo '#!/bin/bash\n\
+set -e\n\
+\n\
+echo "🚀 Starting Ollama service..."\n\
+ollama serve &\n\
+OLLAMA_PID=$!\n\
+\n\
+echo "⏳ Waiting for Ollama to start..."\n\
+sleep 5\n\
+\n\
+echo "📥 Pulling gemma:2b model (lightweight, only 1.5GB)..."\n\
+ollama pull gemma:2b || echo "⚠️  Model pull failed, will retry"\n\
+\n\
+echo "✅ Model ready!"\n\
+echo "🌐 Starting Flask application..."\n\
+python web_app.py\n\
+' > /app/start.sh && chmod +x /app/start.sh
+
+CMD ["/app/start.sh"]

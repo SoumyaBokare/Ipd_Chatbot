@@ -1,0 +1,54 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+ipd_chatbot/
+venv/
+ENV/
+env/
+.venv
+
+# Environment files
+.env
+*.env
+
+# Logs
+logs/
+*.log
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Git
+.git/
+.gitignore
+
+# Documentation (optional - remove if you want docs in container)
+*.md
+!README.md
+
+# Temporary files
+*.tmp
+*.bak
+
+# Test files
+test_*.py
+*_test.py
