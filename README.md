@@ -67,37 +67,6 @@ A comprehensive AI-powered chatbot system with multi-model support, web interfac
 
 ---
 
-### 🔧 **Full Setup - All Models** (For advanced users)
-
-If you want access to all 9 AI providers (Ollama, Claude, local models, etc.):
-
-1. **Clone the repository**
-   ```powershell
-   git clone <repository-url>
-   cd chatbot
-   ```
-
-2. **Run the interactive setup**
-   ```powershell
-   python setup_models.py
-   ```
-   This will guide you through:
-   - Installing dependencies
-   - Choosing which AI providers to use
-   - Setting up API keys
-   - Testing your configuration
-
-3. **Start the chatbot**
-   ```powershell
-   # For web interface:
-   python web_app.py
-   
-   # For terminal interface:
-   python main.py
-   ```
-
----
-
 ### 🆘 **Troubleshooting Common Issues**
 
 **Problem: "Python not found"**
@@ -192,242 +161,238 @@ To switch models in the web interface:
 
 ## 🚀 Features
 
-- **🧠 Multi-Model AI Support**: 9 different AI providers with automatic failover
+- **🧠 Ollama Local Models**: Run AI models 100% locally and free
 - **🌐 Web Interface**: Modern Flask-based web UI with real-time chat
 - **🌍 Multi-Language**: 50+ languages supported with translation
 - **♿ Accessibility**: Full WCAG compliance and voice support
 - **📊 Analytics**: Advanced usage tracking and insights
 - **🔒 Security**: Enterprise-grade security features
 - **⚡ Performance**: Smart caching and optimization
+- **💰 No Costs**: Completely free, no API keys or subscriptions
 
-## 🤖 Supported AI Models
+## 🤖 Available Ollama Models
 
-### 1. **OLLAMA** (Local Models) ⭐ Recommended for beginners
-- **Models**: `llama3.2:latest`, `neural-chat`, `codellama`, `mistral:latest`
-- **Setup**: Install Ollama and pull models
-- **Cost**: Free
-- **Internet**: Not required after setup
+This chatbot uses **Ollama** to run AI models locally on your computer. Here are the recommended models:
 
-### 2. **OpenAI** (GPT Models) ⭐ Most reliable
-- **Models**: `gpt-4o`, `gpt-4`, `gpt-3.5-turbo`
-- **Setup**: Requires `OPENAI_API_KEY`
-- **Cost**: Pay per token
-- **Internet**: Required
+### **Recommended Models:**
 
-### 3. **Anthropic** (Claude Models) ⭐ Most capable
-- **Models**: `claude-3-5-sonnet-20241022`, `claude-3-opus-20240229`, `claude-3-haiku-20240307`
-- **Setup**: Requires `ANTHROPIC_API_KEY`
-- **Cost**: Pay per token
-- **Internet**: Required
+1. **llama3.1:8b** ⭐ (Default)
+   - Size: ~4.7GB
+   - Best for: General conversation, balanced performance
+   - Download: `ollama pull llama3.1:8b`
 
-### 4. **LOCAL** (Transformers) ⭐ Completely offline
-- **Models**: `microsoft/DialoGPT-medium`, `gpt2`, `distilgpt2`
-- **Setup**: Automatic download via Hugging Face
-- **Cost**: Free
-- **Internet**: Only for initial model download
+2. **gemma:2b** ⚡
+   - Size: ~1.5GB
+   - Best for: Fast responses, lightweight
+   - Download: `ollama pull gemma:2b`
 
-### 5. **Hugging Face Hub**
-- **Models**: `microsoft/DialoGPT-large`, `facebook/blenderbot-1B-distill`
-- **Setup**: Requires `HUGGINGFACE_API_TOKEN`
-- **Cost**: Free tier available
-- **Internet**: Required
+3. **phi3:mini**
+   - Size: ~2.2GB
+   - Best for: Coding tasks and technical questions
+   - Download: `ollama pull phi3:mini`
 
-### 6. **Cohere**
-- **Models**: `command`, `command-light`, `command-nightly`
-- **Setup**: Requires `COHERE_API_KEY`
-- **Cost**: Free tier available
-- **Internet**: Required
+4. **llama3.2:1b** 🚀
+   - Size: ~1.3GB
+   - Best for: Ultra-fast responses on slower computers
+   - Download: `ollama pull llama3.2:1b`
 
-### 7. **Google (PaLM/Gemini)**
-- **Models**: `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-pro`
-- **Setup**: Requires `GOOGLE_API_KEY`
-- **Cost**: Free tier available
-- **Internet**: Required
+5. **neural-chat**
+   - Size: ~4.1GB
+   - Best for: Natural conversations
+   - Download: `ollama pull neural-chat`
 
-### 8. **Mistral AI**
-- **Models**: `mistral-large-latest`, `mistral-medium-latest`, `mistral-small-latest`
-- **Setup**: Requires `MISTRAL_API_KEY`
-- **Cost**: Pay per token
-- **Internet**: Required
+6. **codellama**
+   - Size: ~3.8GB
+   - Best for: Programming and code generation
+   - Download: `ollama pull codellama`
 
-### 9. **Replicate**
-- **Models**: `meta/llama-2-70b-chat`, `meta/llama-2-13b-chat`
-- **Setup**: Requires `REPLICATE_API_TOKEN`
-- **Cost**: Pay per second
-- **Internet**: Required
+### **How to Download Models:**
+```powershell
+# Download one or more models
+ollama pull llama3.1:8b
+ollama pull gemma:2b
+
+# Check which models you have installed
+ollama list
+
+# Test a model
+ollama run llama3.1:8b
+```
 
 ## 🛠️ Quick Start
 
-### Option 1: Easy Setup Script (Recommended)
-```powershell
-# Run the interactive setup
-python setup_models.py
-```
-
-### Option 2: Manual Setup
+### Simple 3-Step Setup:
 
 ```powershell
-# 1. Activate virtual environment (if using one)
-.\ipd_chatbot\Scripts\activate
+# 1. Install Ollama from https://ollama.com/download
 
-# 2. Install core dependencies
+# 2. Download a model
+ollama pull llama3.1:8b
+
+# 3. Install Python dependencies and run
 pip install -r requirements.txt
-
-# 3. Choose your AI provider and install specific dependencies:
-
-# For Ollama (Local, Free)
-ollama serve
-ollama pull neural-chat
-
-# For OpenAI
-pip install langchain-openai
-# Set OPENAI_API_KEY in environment
-
-# For local transformers models
-pip install transformers torch
-
-# 4. Run the application
-python main.py              # Terminal interface
-# OR
-python web_app.py           # Web interface (http://127.0.0.1:5000)
+python web_app.py
 ```
 
-## 🔑 Environment Variables
+Then open **http://127.0.0.1:5000** in your browser!
 
-Create a `.env` file or set these in your system environment:
+### Detailed Setup:
 
-```bash
-# OpenAI (GPT models)
-OPENAI_API_KEY=your_openai_api_key_here
+1. **Install Ollama**
+   - Download from https://ollama.com/download
+   - Run the installer
+   - Ollama runs automatically in the background
 
-# Anthropic (Claude models)  
-ANTHROPIC_API_KEY=your_anthropic_api_key_here
+2. **Download AI models**
+   ```powershell
+   # Main model (required)
+   ollama pull llama3.1:8b
+   
+   # Fallback models (optional but recommended)
+   ollama pull gemma:2b
+   ollama pull phi3:mini
+   ```
 
-# Hugging Face Hub
-HUGGINGFACE_API_TOKEN=your_huggingface_token_here
+3. **Install Python dependencies**
+   ```powershell
+   pip install -r requirements.txt
+   ```
 
-# Cohere
-COHERE_API_KEY=your_cohere_api_key_here
-
-# Google (PaLM/Gemini)
-GOOGLE_API_KEY=your_google_api_key_here
-
-# Mistral AI
-MISTRAL_API_KEY=your_mistral_api_key_here
-
-# Replicate
-REPLICATE_API_TOKEN=your_replicate_token_here
-```
+4. **Run the chatbot**
+   ```powershell
+   # Web interface (recommended)
+   python web_app.py
+   
+   # OR Terminal interface
+   python main.py
+   ```
 
 ## 📁 Project Structure
 
 ```
 chatbot/
 ├── main.py                    # Main terminal chatbot
-├── web_app.py                # Flask web application  
-├── model_config_examples.py   # Configuration examples
-├── setup_models.py           # Interactive setup script
-├── test_models.py            # Model testing script
-├── requirements.txt          # Python dependencies
-├── templates/                # Web UI templates
-├── static/                   # CSS, JS, assets
-└── logs/                     # Application logs
+├── web_app.py                 # Flask web application  
+├── requirements.txt           # Python dependencies
+├── templates/                 # Web UI templates
+│   ├── index.html            # Main web interface
+│   └── pi_index.html         # Raspberry Pi interface
+├── static/                    # CSS, JS, assets
+│   ├── css/style.css
+│   └── js/app.js
+└── logs/                      # Application logs
 ```
 
-## 🧪 Testing Models
+## 🎯 How to Use
 
-Test your model setup:
+### **Web Interface:**
+1. Run `python web_app.py`
+2. Open http://127.0.0.1:5000
+3. Select your preferred Ollama model from the dropdown
+4. Start chatting!
 
-```powershell
-python test_models.py
-```
+### **Terminal Interface:**
+1. Run `python main.py`
+2. Type your questions
+3. Get AI responses in your terminal
 
-## 📖 Configuration Examples
+### **Switching Models:**
+- **In Web UI**: Use the model dropdown menu at the top
+- **In Code**: Edit `web_app.py` line 30 to change the default model
 
-See `model_config_examples.py` for detailed configuration examples for each provider.
-
-## 🎯 Recommended Setups
-
-### 🏠 **Home/Personal Use**
-```python
-# Ollama + Local models (Free, Privacy-focused)
-config = KioskConfig(
-    primary_model_provider=ModelProvider.OLLAMA,
-    primary_model_name="llama3.2:latest",
-    fallback_models=[
-        (ModelProvider.LOCAL, "microsoft/DialoGPT-medium")
-    ]
-)
-```
-
-### 💼 **Business/Production**
-```python
-# OpenAI + Anthropic with local fallback
-config = KioskConfig(
-    primary_model_provider=ModelProvider.OPENAI,
-    primary_model_name="gpt-4",
-    fallback_models=[
-        (ModelProvider.ANTHROPIC, "claude-3-haiku-20240307"),
-        (ModelProvider.LOCAL, "microsoft/DialoGPT-medium")
-    ]
-)
-```
-
-### 💰 **Budget-Friendly**
-```python
-# Local + Free tier models only
-config = KioskConfig(
-    primary_model_provider=ModelProvider.LOCAL,
-    primary_model_name="microsoft/DialoGPT-medium",
-    fallback_models=[
-        (ModelProvider.HUGGINGFACE, "microsoft/DialoGPT-large")
-    ]
-)
-```
-
-## 🌐 Web Interface
-
-Access the modern web interface at `http://127.0.0.1:5000` after running:
-
-```powershell
-python web_app.py
-```
-
-## 📊 Features
+## 🌐 Web Interface Features
 
 - **Real-time chat interface**
-- **Model selection dropdown**  
-- **Language translation**
-- **Voice input/output**
+- **Model selection dropdown** - Switch between Ollama models instantly
+- **Language translation** - Support for 50+ languages
+- **Voice input/output** (optional)
 - **Usage analytics**
 - **Accessibility features**
+- **Clean, modern UI**
+
+## 💻 System Requirements
+
+**Minimum:**
+- Windows 10/11, macOS, or Linux
+- Python 3.8 or higher
+- 4GB RAM
+- 5GB free disk space
+
+**Recommended:**
+- 8GB+ RAM (for better performance)
+- 10GB+ free disk space (for multiple models)
+- SSD for faster model loading
 
 ## 🆘 Troubleshooting
 
 ### Common Issues:
 
-1. **"Module not found" errors**: Run `python setup_models.py` to install dependencies
-2. **API key errors**: Set environment variables in `.env` file
-3. **Ollama connection failed**: Start Ollama service: `ollama serve`
-4. **Model download slow**: Local models download on first use
+1. **"ollama: command not found"**
+   - Install Ollama from https://ollama.com/download
+   - Restart your terminal after installation
+
+2. **"Connection refused" or "Ollama not responding"**
+   - Run `ollama serve` in a terminal
+   - Or restart your computer (Ollama auto-starts)
+   - Check http://localhost:11434 in browser
+
+3. **"Model not found"**
+   - Download the model: `ollama pull llama3.1:8b`
+   - Check installed models: `ollama list`
+
+4. **"Module not found" errors**
+   - Install dependencies: `pip install -r requirements.txt`
+
+5. **Slow responses**
+   - First response is slower (model loads into memory)
+   - Use a smaller model: `gemma:2b` or `llama3.2:1b`
+   - Close other applications to free RAM
+
+6. **Out of memory errors**
+   - Use a smaller model (gemma:2b uses only 1.5GB)
+   - Close other applications
+   - Consider upgrading RAM
 
 ### Getting Help:
 
-1. Check `logs/` directory for detailed error logs
-2. Run `python test_models.py` to diagnose model issues
-3. See `model_config_examples.py` for working configurations
+- Check `logs/` directory for error logs
+- Verify Ollama is running: `ollama list`
+- Test a model directly: `ollama run llama3.1:8b`
 
 ## 🚀 Advanced Features
 
-- **Multi-language support** (50+ languages)
-- **Voice input/output**
-- **Analytics dashboard**
-- **Custom model integration**
-- **Enterprise security**
+- **Multi-language support** (50+ languages via translation)
+- **Voice input/output** (optional feature)
+- **Usage analytics dashboard**
+- **Multiple Ollama model support**
+- **Automatic model failover**
+- **Smart caching for faster responses**
 - **Accessibility compliance**
+- **100% Private** - all data stays on your computer
+
+## ❓ FAQ
+
+**Q: Do I need an internet connection?**
+A: Only for the initial Ollama and model downloads. After that, it works completely offline!
+
+**Q: Is this really free?**
+A: Yes! 100% free forever. No hidden costs, subscriptions, or API fees.
+
+**Q: How much does it cost to run?**
+A: $0. It uses your computer's resources (CPU/RAM) which you already have.
+
+**Q: Can I use this commercially?**
+A: Yes, Ollama models are open-source and free to use commercially.
+
+**Q: Which model should I use?**
+A: Start with `llama3.1:8b` for best balance. Use `gemma:2b` if you need faster responses or have limited RAM.
+
+**Q: Is my data private?**
+A: Yes! Everything runs locally on your computer. No data is sent to external servers.
+
+**Q: Can I run this on a laptop?**
+A: Yes! For laptops with 8GB RAM, use `gemma:2b` or `llama3.2:1b` for better performance.
 
 ## 📄 License
 
-This project is open source. See configuration examples and documentation for implementation details.
-- If `main.py` can't initialize models because optional packages or APIs are missing, the web UI will still load but `/api/chat` will return an error explaining the chatbot isn't initialized. Check server logs to diagnose.
-- For production, consider adding process supervision and HTTPS.
+This project is open source. Ollama models are open-source and free to use.
