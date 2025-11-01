@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Pi Kiosk Chatbot</title>
+    <style>
+        /* Optimized for 3.5-inch display (480x320) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            overflow: hidden;
+            font-size: 12px; /* Smaller font for tiny screen */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 8px;
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .message {
+            margin-bottom: 8px;
+            padding: 6px 10px;
+            border-radius: 12px;
+            max-width: 85%;
+            word-wrap: break-word;
+            font-size: 11px;
+            line-height: 1.3;
+        }
+
+        .user-message {
+            background: #4CAF50;
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .bot-message {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            margin-right: auto;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 8px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        #messageInput {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 15px;
+            outline: none;
+            font-size: 12px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        #sendButton {
+            padding: 8px 16px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: background 0.3s;
+            min-width: 60px;
+        }
+
+        #sendButton:hover {
+            background: #45a049;
+        }
+
+        #sendButton:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .status {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 6px 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            margin-right: auto;
+            max-width: 85%;
+            font-size: 11px;
+            color: #666;
+        }
+
+        .typing-dots {
+            display: inline-block;
+        }
+
+        .typing-dots span {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            background: #666;
+            border-radius: 50%;
+            margin: 0 1px;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-8px); }
+        }
+
+        /* Touch-friendly scrollbar for small screen */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        /* Quick action buttons for kiosk */
+        .quick-actions {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .quick-btn {
+            padding: 4px 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 10px;
+            cursor: pointer;
+            flex: 1;
+            min-width: 60px;
+        }
+
+        .quick-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🥧 Pi Kiosk Assistant</h1>
+        </div>
+        
+        <div class="chat-container">
+            <div class="quick-actions">
+                <button class="quick-btn" onclick="sendQuickMessage('Hello!')">Hello</button>
+                <button class="quick-btn" onclick="sendQuickMessage('Help me')">Help</button>
+                <button class="quick-btn" onclick="sendQuickMessage('What can you do?')">Info</button>
+                <button class="quick-btn" onclick="clearChat()">Clear</button>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    👋 Welcome to Pi Kiosk! How can I help you today?
+                </div>
+            </div>
+            
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                Pi is thinking...
+            </div>
+            
+            <div class="input-container">
+                <input type="text" id="messageInput" placeholder="Type your message..." maxlength="200" autocomplete="off">
+                <button id="sendButton" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script>
+        // Initialize Socket.IO connection
+        const socket = io();
+        
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+        
+        let userId = 'user_' + Math.random().toString(36).substr(2, 9);
+
+        // Socket event handlers
+        socket.on('connect', function() {
+            console.log('Connected to Pi Kiosk server');
+        });
+
+        socket.on('bot_response', function(data) {
+            hideTyping();
+            addMessage(data.response, 'bot-message');
+        });
+
+        socket.on('error', function(data) {
+            hideTyping();
+            addMessage('Sorry, there was an error: ' + data.message, 'bot-message');
+        });
+
+        // Add message to chat
+        function addMessage(text, className) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ' + className;
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Send message
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message) {
+                addMessage(message, 'user-message');
+                showTyping();
+                
+                socket.emit('send_message', {
+                    message: message,
+                    user_id: userId
+                });
+                
+                messageInput.value = '';
+            }
+        }
+
+        // Quick message sender
+        function sendQuickMessage(message) {
+            addMessage(message, 'user-message');
+            showTyping();
+            
+            socket.emit('send_message', {
+                message: message,
+                user_id: userId
+            });
+        }
+
+        // Show typing indicator
+        function showTyping() {
+            typingIndicator.style.display = 'block';
+            sendButton.disabled = true;
+        }
+
+        // Hide typing indicator
+        function hideTyping() {
+            typingIndicator.style.display = 'none';
+            sendButton.disabled = false;
+        }
+
+        // Clear chat
+        function clearChat() {
+            chatMessages.innerHTML = '<div class="message bot-message">👋 Chat cleared! How can I help you?</div>';
+        }
+
+        // Enter key to send
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Auto-focus input (good for kiosk)
+        messageInput.focus();
+        
+        // Prevent zoom on double tap (iOS)
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>

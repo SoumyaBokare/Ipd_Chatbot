@@ -1,0 +1,36 @@
+# Raspberry Pi 4B Optimized Requirements
+# Lightweight versions for ARM architecture
+
+# Web Framework (essential)
+flask>=2.3.0
+flask-socketio>=5.3.0
+flask-cors>=4.0.0
+
+# UI and Formatting (lightweight)
+rich>=13.0.0
+colorama>=0.4.6
+
+# Environment Variables
+python-dotenv>=1.0.0
+
+# Translation (lightweight option)
+googletrans==4.0.0rc1
+
+# Basic HTTP requests
+requests>=2.28.0
+
+# For Pi GPIO if needed
+# RPi.GPIO>=0.7.1  # Uncomment if you need GPIO control
+
+# Ollama AI (your preferred choice)
+langchain-ollama>=0.1.0
+langchain-core>=0.2.0
+ollama>=0.1.0
+
+# Optional: Alternative AI APIs (commented out since you're using Ollama)
+# openai>=1.0.0           # If using OpenAI API
+# anthropic>=0.7.0        # If using Claude API
+
+# Audio support (if needed)
+# pyaudio>=0.2.11         # May need system packages
+# pyttsx3>=2.90           # Text-to-speech

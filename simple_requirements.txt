@@ -1,0 +1,20 @@
+# Simple OpenAI-only Chatbot Requirements
+# Install with: pip install -r simple_requirements.txt
+
+# Web Framework
+flask>=2.3.0
+flask-socketio>=5.3.0
+
+# UI and Formatting  
+rich>=13.0.0
+colorama>=0.4.6
+
+# Core LangChain
+langchain-core>=0.2.0
+langchain-openai>=0.1.0
+
+# Environment Variables
+python-dotenv>=1.0.0
+
+# Translation (optional)
+deep-translator>=1.11.0
