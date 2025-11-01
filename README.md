@@ -5,7 +5,7 @@ A comprehensive AI-powered chatbot system with multi-model support, web interfac
 
 ---
 
-## 📦 QUICK SETUP FOR NEW USERS (FOR YOUR FRIEND!)
+## 📦 QUICK SETUP FOR NEW USERS 
 
 ### 🎯 **Easy Setup - Ollama Local Models** (100% Free, No API Keys!)
 
