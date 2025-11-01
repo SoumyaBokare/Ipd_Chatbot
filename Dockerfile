@@ -13,10 +13,11 @@ RUN apt-get update && apt-get install -y \
 RUN curl -fsSL https://ollama.com/install.sh | sh
 
 # Copy requirements first for better caching
-COPY requirements.txt .
+COPY requirements-render.txt requirements.txt
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy application files
 COPY . .
